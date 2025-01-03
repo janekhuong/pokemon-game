@@ -59,7 +59,9 @@ function initBattle() {
                 opacity: 0,
               });
               battling.initiated = false;
-              audio.Map.play()
+              if (clicked) {
+                audio.Map.play();
+              }
             },
           });
         });
@@ -93,7 +95,9 @@ function initBattle() {
                   opacity: 0,
                 });
                 battling.initiated = false;
-                audio.Map.play()
+                if (clicked) {
+                  audio.Map.play();
+                }
               },
             });
           });

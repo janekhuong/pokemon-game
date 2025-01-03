@@ -6,6 +6,7 @@ class Sprite {
     sprites,
     animate = false,
     rotation = 0,
+    scale = 1,
   }) {
     this.position = position;
     this.image = new Image();
@@ -18,8 +19,16 @@ class Sprite {
     this.animate = animate;
     this.sprites = sprites;
     this.opacity = 1;
-
     this.rotation = rotation;
+    this.scale = scale;
+  }
+
+  get scaledWidth() {
+    return this.width * this.scale;
+  }
+
+  get scaledHeight() {
+    return this.height * this.scale;
   }
 
   draw() {
@@ -34,6 +43,7 @@ class Sprite {
       -this.position.y - this.height / 2
     );
     c.globalAlpha = this.opacity;
+
     c.drawImage(
       this.image,
       this.frames.val * this.width,
@@ -42,9 +52,10 @@ class Sprite {
       this.image.height,
       this.position.x,
       this.position.y,
-      this.image.width / this.frames.max,
-      this.image.height
+      (this.image.width / this.frames.max) * this.scale,
+      this.image.height * this.scale
     );
+
     c.restore();
 
     if (!this.animate) return;
