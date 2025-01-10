@@ -11,9 +11,10 @@ A dynamic Pokémon-themed game built using JavaScript and HTML5 Canvas. This gam
 
 - **Player Movement**: Navigate through the map with responsive character controls.
 - **Map Boundaries**: Prevent players from moving beyond defined boundaries.
-- **Battle Sequences**: Engage in exciting turn-based Pokémon battles.
+- **Battle Sequences**: Engage in turn-based Pokémon battles.
 - **Animations**: Smooth transitions and animations for battles and movement.
 - **Pixel Art Design**: Retro visuals inspired by classic Pokémon games.
+- **Game Audio**: Background music and sound effects, which can be toggled on and off with a mute button.
 
 ## How to Play
 
@@ -46,10 +47,6 @@ A dynamic Pokémon-themed game built using JavaScript and HTML5 Canvas. This gam
 - **HTML5 Canvas**: For rendering the game world and animations.
 - **JavaScript**: Core logic for player interactions, battles, and game mechanics.
 - **CSS**: Basic styling for the game layout.
-
-## Acknowledgements
-
-This project was created with the help of a tutorial by Chris Courses on YouTube. Check out the original video [here](https://www.youtube.com/watch?v=yP5DKzriqXA&t=612s).
 
 ## Future Enhancements
 - Implement an option to pick from a variety of starter Pokémon
