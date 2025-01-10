@@ -82,6 +82,7 @@ class Monster extends Sprite {
     isEnemy = false,
     name,
     attacks,
+    scale,
   }) {
     super({
       position,
@@ -90,6 +91,7 @@ class Monster extends Sprite {
       sprites,
       animate,
       rotation,
+      scale,
     });
     this.name = name;
     this.isEnemy = isEnemy;
@@ -105,8 +107,13 @@ class Monster extends Sprite {
     gsap.to(this, {
       opacity: 0,
     });
-    audio.victory.play();
-    audio.battle.stop();
+    if (!muted) {
+      audio.victory.play();
+      audio.battle.stop();
+    } else {
+      audio.victory.stop();
+      audio.battle.stop();
+    }
   }
 
   attack({ attack, recipient, renderedSprites }) {
@@ -123,8 +130,33 @@ class Monster extends Sprite {
     recipient.health -= attack.damage;
 
     switch (attack.name) {
+      case "Run":
+        queue.push(() => {
+          gsap.to("#overlappingDiv", {
+            opacity: 1,
+            onComplete: () => {
+              cancelAnimationFrame(battleAnimationId);
+              animate();
+              document.querySelector("#userInterface").style.display = "none";
+              gsap.to("#overlappingDiv", {
+                opacity: 0,
+              });
+              battling.initiated = false;
+              audio.battle.stop();
+              if (!muted) {
+                audio.Map.play();
+              }
+            },
+          });
+        });
+        break;
+
       case "Fireball":
-        audio.initFireball.play();
+        if (!muted) {
+          audio.initFireball.play();
+        } else {
+          audio.initFireball.stop();
+        }
         const fireballImage = new Image();
         fireballImage.src = "./img/fireball.png";
         const fireball = new Sprite({
@@ -148,7 +180,12 @@ class Monster extends Sprite {
           y: recipient.position.y,
           onComplete: () => {
             // enemy actually gets hit
-            audio.fireballHit.play();
+            if (!muted) {
+              audio.fireballHit.play();
+            } else {
+              audio.fireballHit.stop();
+            }
+
             gsap.to(healthBar, {
               width: recipient.health + "%",
             });
@@ -171,7 +208,10 @@ class Monster extends Sprite {
 
         break;
 
-      case "Tackle":
+      case "Quick Attack":
+      case "Body Slam":
+      case "Lick":
+      case "Tail Whip":
         const tl = gsap.timeline();
 
         let movementDistance = 20;
@@ -185,7 +225,11 @@ class Monster extends Sprite {
             duration: 0.1,
             onComplete: () => {
               // enemy actually gets hit
-              audio.tackleHit.play();
+              if (!muted) {
+                audio.tackleHit.play();
+              } else {
+                audio.tackleHit.stop();
+              }
               gsap.to(healthBar, {
                 width: recipient.health + "%",
               });

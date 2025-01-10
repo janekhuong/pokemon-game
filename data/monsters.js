@@ -1,27 +1,44 @@
+
+const tailWhipImage = new Image();
+tailWhipImage.src = "./img/tail whip.png";
+
 const monsters = {
-  Emby: {
+  Foxie: {
     position: {
       x: 280,
       y: 325,
     },
     image: {
-      src: "./img/embySprite.png",
+      src: "./img/fox.png",
     },
     frames: {
       max: 4,
       hold: 30,
     },
     animate: true,
-    name: "Emby",
-    attacks: [attacks.Tackle, attacks.Fireball],
+    name: "Foxie",
+    attacks: [
+      attacks["Quick Attack"],
+      attacks["Tail Whip"],
+      attacks.Fireball,
+      attacks.Run,
+    ],
+    scale: 4,
+    sprites: {
+      tail_whip: {
+        image: tailWhipImage,
+        frames: { max: 3, hold: 10 },
+      },
+    },
   },
-  Draggle: {
+
+  Frogie: {
     position: {
       x: 800,
-      y: 100,
+      y: 110,
     },
     image: {
-      src: "./img/draggleSprite.png",
+      src: "./img/frog.png",
     },
     frames: {
       max: 4,
@@ -29,7 +46,8 @@ const monsters = {
     },
     animate: true,
     isEnemy: true,
-    name: "Draggle",
-    attacks: [attacks.Tackle, attacks.Fireball],
+    name: "Frogie",
+    attacks: [attacks["Quick Attack"], attacks.Lick, attacks["Body Slam"]],
+    scale: 3,
   },
 };

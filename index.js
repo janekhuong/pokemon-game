@@ -207,7 +207,8 @@ function animate() {
         window.cancelAnimationFrame(animationId);
 
         audio.Map.stop();
-        if (clicked) {
+
+        if (!muted) {
           audio.initBattle.play();
           audio.battle.play();
         }
@@ -253,7 +254,7 @@ function animate() {
             ...boundary,
             position: {
               x: boundary.position.x,
-              y: boundary.position.y + 3,
+              y: boundary.position.y + 5,
             },
           },
         })
@@ -279,7 +280,7 @@ function animate() {
           rectangle2: {
             ...boundary,
             position: {
-              x: boundary.position.x + 3,
+              x: boundary.position.x + 5,
               y: boundary.position.y,
             },
           },
@@ -312,7 +313,7 @@ function animate() {
             ...boundary,
             position: {
               x: boundary.position.x,
-              y: boundary.position.y - 3,
+              y: boundary.position.y - 5,
             },
           },
         })
@@ -338,7 +339,7 @@ function animate() {
           rectangle2: {
             ...boundary,
             position: {
-              x: boundary.position.x - 3,
+              x: boundary.position.x - 5,
               y: boundary.position.y,
             },
           },
@@ -363,7 +364,7 @@ function animate() {
   }
 }
 
-//animate();
+// animate();
 
 let lastKey = "";
 window.addEventListener("keydown", (e) => {
@@ -404,10 +405,19 @@ window.addEventListener("keyup", (e) => {
   }
 });
 
-let clicked = false;
-addEventListener("click", () => {
-  if (!clicked) {
-    audio.Map.play();
-    clicked = true;
+let muted = true;
+const muteButton = document.getElementById("muteButton");
+
+muteButton.addEventListener("click", () => {
+  muted = !muted;
+
+  if (!muted) {
+    muteButton.textContent = "Mute";
+    if (!battling.initiated) {
+      audio.Map.play();
+    }
+  } else {
+    muteButton.textContent = "Unmute";
+    audio.Map.stop();
   }
 });

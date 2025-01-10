@@ -8,8 +8,8 @@ const battleBackground = new Sprite({
   image: battleBackgroundImage,
 });
 
-let draggle;
-let emby;
+let frogie;
+let foxie;
 let renderedSprites;
 let battleAnimationId;
 let queue;
@@ -21,30 +21,32 @@ function initBattle() {
   document.querySelector("#playerHealthBar").style.width = "100%";
   document.querySelector("#attacksBox").replaceChildren();
 
-  draggle = new Monster(monsters.Draggle);
-  emby = new Monster(monsters.Emby);
-  renderedSprites = [draggle, emby];
+  foxie = new Monster({ ...monsters.Foxie, position: { x: 280, y: 325 } });
+  frogie = new Monster({ ...monsters.Frogie, position: { x: 800, y: 110 } });
+
+  renderedSprites = [frogie, foxie];
   queue = [];
 
-  emby.attacks.forEach((attack) => {
+  foxie.attacks.forEach((attack) => {
     const button = document.createElement("button");
     button.innerHTML = attack.name;
     document.querySelector("#attacksBox").append(button);
+    button.id = "attackButton";
   });
 
   // our event listeners for our buttons (attack)
-  document.querySelectorAll("button").forEach((button) => {
+  document.querySelectorAll("#attackButton").forEach((button) => {
     button.addEventListener("click", (e) => {
       const selectedAttack = attacks[e.currentTarget.innerHTML];
-      emby.attack({
+      foxie.attack({
         attack: selectedAttack,
-        recipient: draggle,
+        recipient: frogie,
         renderedSprites,
       });
 
-      if (draggle.health <= 0) {
+      if (frogie.health <= 0) {
         queue.push(() => {
-          draggle.faint();
+          frogie.faint();
         });
 
         queue.push(() => {
@@ -59,28 +61,30 @@ function initBattle() {
                 opacity: 0,
               });
               battling.initiated = false;
-              if (clicked) {
+              if (!muted) {
                 audio.Map.play();
+              } else {
+                audio.Map.stop();
               }
             },
           });
         });
       }
 
-      // draggle or enemy attacks right here
+      // frogie or enemy attacks right here
       const randomAttack =
-        draggle.attacks[Math.floor(Math.random() * draggle.attacks.length)];
+        frogie.attacks[Math.floor(Math.random() * frogie.attacks.length)];
 
       queue.push(() => {
-        draggle.attack({
+        frogie.attack({
           attack: randomAttack,
-          recipient: emby,
+          recipient: foxie,
           renderedSprites,
         });
 
-        if (emby.health <= 0) {
+        if (foxie.health <= 0) {
           queue.push(() => {
-            emby.faint();
+            foxie.faint();
           });
 
           queue.push(() => {
@@ -95,8 +99,10 @@ function initBattle() {
                   opacity: 0,
                 });
                 battling.initiated = false;
-                if (clicked) {
+                if (!muted) {
                   audio.Map.play();
+                } else {
+                  audio.Map.stop();
                 }
               },
             });
@@ -130,4 +136,15 @@ document.querySelector("#dialogueBox").addEventListener("click", (e) => {
     queue[0]();
     queue.shift();
   } else e.currentTarget.style.display = "none";
+});
+
+let muted2 = true;
+const muteButton2 = document.getElementById("muteButton");
+muteButton2.addEventListener("click", () => {
+  muted2 = !muted2;
+  if (muteButton2.textContent === "Mute" && battling.initiated) {
+    audio.battle.play();
+  } else {
+    audio.battle.stop();
+  }
 });
