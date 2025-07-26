@@ -5,7 +5,7 @@
   <img src="./img/game screenshot 2.png" alt="Screenshot 2" width="45%">
 </div>
 
-A dynamic Pokémon-themed game built using JavaScript and HTML5 Canvas. This game brings the excitement of Pokémon battles and exploration into your browser, featuring player movement, map boundaries, battle sequences, and smooth animations.
+A dynamic Pokémon-themed game built using JavaScript and HTML. 
 
 ## Features
 
